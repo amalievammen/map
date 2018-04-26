@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>The Call Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+    
+<style>
+    
+    #background {
+        position: fixed;
+        padding-left: 600px;
+        padding-top: 150px;
+        z-index: -1;
+    }
+    
+    body {
+        height: 2000px; 
+        background-color: black;
+        
+  
+    
+        
+    }
+    
+    #logo {
+        display: block;
+        position: fixed;
+       z-index: 1;
+    }   
+    
+    h3 {
+        color:floralwhite;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+    
+#map {
+    position: fixed;
+    width:50%;
+}
+#features {
+    width: 50%;
+    margin-left: 50%;
+    font-family: sans-serif;
+   color: #cccccc;
+}
+    
+section {
+    padding:  25px 50px;
+    line-height: 25px;
+    font-size: 16px;
+}
+    
+section:last-child {
+    border-bottom: none;
+   
+}
+</style>
+
+<div id='map'> 
+     <img id="logo" src="images/95241b36-cdca-4f2f-9014-a2260098db52_COVER.png" alt="Logo"  width="300">
+    </div>
+<div id='features'>
+    <section id='California' class='active'>
+        <h3>Where does "the call" take place?</h3>
+        <p>
+A kidnapped teenager and a premeditated employee at the alarm center work together over the phone to prevent a dangerous serial killer from turning back on. The story takes place in California, USA. 
+</p>
+    </section>
+    <section id='ThousandOaks'>
+        <h3>Thousand Oaks, California</h3>
+        <p>Casey is kidnapped in a Thousand Oaks, near a shopping mall. She has two cell phones: her own and the prepaid cell phone her best friend Autumn left behind when she ditched her at the food court. A man almost hits Casey in the parking garage, and she drops her smart phone. The driver jumps out and apologizes, but within seconds he has wrapped his hands around Casey's mouth and body. This is the start of the abduction.</p>
+    </section>
+    <section id='Ventura'>
+        <h3>Ventura Highway, California</h3>
+        <p>Jordan, at the alarm center, figure out, by talking to Casey, that she is on a highway. Jordan tells her to kick one of the tail lights and put her hand through the hole and attracts another driver. </p>
+    </section>
+    <section id='Lynn'>
+        <h3>Lynn Oaks Park, California</h3>
+        <p>Lynn Oaks Park is the place where Casey is found by Jordan. The police could not find the perpetrator himself, but Jordan had an idea of ​​where he could be. <br><br>This place is the end of story.</p>
+    </section>
+    
+    
+</div>
+  
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYmZyaXNjaCIsImEiOiJjamZqYzVjazQ2YWZqMndwbnk1eHl5ZW5mIn0.rVuDwaDvB5wFMWcwgmmGDQ';
+
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/bfrisch/cjgf5y155002w2so581of5bkd',
+    center: [-84.390200, 33.749100],
+    zoom: 1.00,
+    bearing: 0.00,
+    pitch: 0.00
+});
+    
+    
+
+var chapters = {
+    'California': {
+        bearing: 0.00,
+        center: [-118.871151, 34.187204],
+        zoom: 12.50,
+        pitch: 0.00
+    },
+    'ThousandOaks': {
+        duration: 6000,
+        center: [-118.838083, 34.169958],
+        bearing: 0.00,
+        zoom: 16.94,
+        pitch: 60.00
+    },
+    'Ventura': {
+        bearing: -23.20,
+        center: [-118.863948, 34.176006],
+        zoom: 15.27,
+        speed: 0.6,
+        pitch: 60.00
+    },
+    'Lynn': {
+        bearing: 106.13,
+        center: [-118.904652, 34.179584],
+        zoom: 14.98,
+        pitch: 42.00
+    }
+};
+
+// On every scroll event, check which element is on screen
+window.onscroll = function() {
+    var chapterNames = Object.keys(chapters);
+    for (var i = 0; i < chapterNames.length; i++) {
+        var chapterName = chapterNames[i];
+        if (isElementOnScreen(chapterName)) {
+            setActiveChapter(chapterName);
+            break;
+        }
+    }
+};
+
+var activeChapterName = 'baker';
+function setActiveChapter(chapterName) {
+    if (chapterName === activeChapterName) return;
+
+    map.flyTo(chapters[chapterName]);
+
+    document.getElementById(chapterName).setAttribute('class', 'active');
+    document.getElementById(activeChapterName).setAttribute('class', '');
+
+    activeChapterName = chapterName;
+}
+
+function isElementOnScreen(id) {
+    var element = document.getElementById(id);
+    var bounds = element.getBoundingClientRect();
+    return bounds.top < window.innerHeight && bounds.bottom > 0;
+}
+
+</script>
+
+    
+    
+</body>
+</html>
